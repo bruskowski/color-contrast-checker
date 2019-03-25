@@ -5,9 +5,9 @@
   margin: auto;
 }
 
-.card--info {
+.card-info {
   font-size: 0.85em;
-  padding: 3em;
+  padding: 2.5em 3em 1em;
   text-align: left;
   background-color: rgba(255, 255, 255, 1);
   margin: 0.25em;
@@ -15,6 +15,11 @@
     0 0 0 1px rgba(0, 0, 0, 0.1);
   width: 20em;
   border-radius: 0.33em;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .button {

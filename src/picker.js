@@ -155,19 +155,12 @@ export default function Picker(props) {
               Text on Control
             </div>
           </div>
-          <div className="card--info">
-            <div>Contrast Text on Control on Background on White</div>
-            <Contrast
-              foreground={textColor}
-              background={flattenColor(
-                objectColor,
-                flattenColor(backgroundColor, objWhite)
-              )}
-            />
+          <div className="card-info">
+            <div className="card-title">Contrast Text on Control</div>
             <div className="small-print">
-              Relative Luminosity
+              Text ↔︎ Control on Background on White.
               <br />
-              Text on Control on Background on White:{" "}
+              Relative Luminosity:{" "}
               {roundedRelativeLuminance(
                 textColor,
                 flattenColor(
@@ -176,23 +169,30 @@ export default function Picker(props) {
                 )
               )}
             </div>
-            <br />
-            <br />
-            <div>Contrast Control on Background on White</div>
             <Contrast
-              foreground={objectColor}
-              background={flattenColor(backgroundColor, objWhite)}
-              isNonText
+              foreground={textColor}
+              background={flattenColor(
+                objectColor,
+                flattenColor(backgroundColor, objWhite)
+              )}
             />
+            <br />
+            <br />
+            <div className="card-title">Contrast Control</div>
             <div className="small-print">
-              Relative Luminosity
+              Control ↔︎ Background on White.
               <br />
-              Control on Background on White:{" "}
+              Relative Luminosity:{" "}
               {roundedRelativeLuminance(
                 objectColor,
                 flattenColor(backgroundColor, objWhite)
               )}
             </div>
+            <Contrast
+              foreground={objectColor}
+              background={flattenColor(backgroundColor, objWhite)}
+              isNonText
+            />
           </div>
         </div>
         <div className="examples">
@@ -204,18 +204,18 @@ export default function Picker(props) {
           >
             <p>Lorem ipsum …</p>
           </div>
-          <div className="card--info">
-            <div>Contrast Text on Background on White</div>
+          <div className="card-info">
+            <div className="card-title">Contrast Text</div>
+            <div className="small-print">
+              Text ↔︎ Background on White.
+              <br />
+              Relative Luminosity:{" "}
+              {roundedRelativeLuminance(backgroundColor, objWhite)}
+            </div>
             <Contrast
               foreground={textColor}
               background={flattenColor(backgroundColor, objWhite)}
             />
-            <div className="small-print">
-              Relative Luminosity
-              <br />
-              Background on White:{" "}
-              {roundedRelativeLuminance(backgroundColor, objWhite)}
-            </div>
           </div>
         </div>
         <div className="picker-layout">

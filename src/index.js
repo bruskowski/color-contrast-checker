@@ -29,7 +29,8 @@ function App() {
           )}
         />
         <div className="small-print source">
-          Text Large: > 24px or > 18.5px for bold fonts. Learn more:{" "}
+          AA Large applies to text > 24px or > 18.5px for bold fonts. Learn
+          more:{" "}
           <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum">
             Text Contrast
           </a>{" "}
