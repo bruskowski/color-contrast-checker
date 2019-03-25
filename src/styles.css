@@ -1,4 +1,141 @@
 .App {
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
   text-align: center;
+  margin: auto;
+}
+
+.card--info {
+  font-size: 0.85em;
+  padding: 3em;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 1);
+  margin: 0.25em;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
+  width: 20em;
+  border-radius: 0.33em;
+}
+
+.button {
+  color: #000;
+  font-size: 0.85em;
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: calc(1em + 2px) 2em 1em 2em;
+  margin: 3em 2em 2em;
+  display: inline-block;
+  border-radius: 2em;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transition: all ease-out 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.06125em;
+  font-weight: 500;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.05),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.button:active {
+  transform: translateY(0);
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0), 0 2px 4px 0 rgba(0, 0, 0, 0),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.picker-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.picker-wrapper {
+  margin: 1em;
+  text-align: left;
+}
+
+.picker-label {
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.125em;
+  margin: 1em 0 0.5em 0;
+}
+
+.evaluation {
+  font-size: 0.5em;
+  display: inline-block;
+  padding: 0.125em 0.75em;
+  border-radius: 1em;
+  border: 1px solid white;
+  margin: 0.5em 0 0.5em 0.75em;
+  top: -0.35em;
+  position: relative;
+  border: 1px solid rgb(0, 0, 0);
+  font-weight: 500;
+}
+
+.fail {
+  color: rgb(150, 0, 0);
+  border-color: rgb(180, 0, 0);
+  background-color: rgb(255, 220, 220);
+}
+
+.success {
+  color: rgb(0, 90, 0);
+  border-color: rgb(0, 120, 0);
+  background-color: rgb(200, 255, 180);
+}
+
+.large {
+  color: rgb(130, 20, 0);
+  border-color: rgb(160, 40, 0);
+  background-color: rgb(255, 240, 140);
+}
+
+.canvas {
+  line-height: 1.5;
+  padding: 2em;
+}
+
+.layout {
+  max-width: 60em;
+  margin: auto;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.example--text {
+  font-size: 2em;
+  width: 50%;
+  text-align: center;
+}
+
+.example--control {
+  width: 50%;
+}
+
+.example--control div {
+  padding: 1em 2em;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.contrast-info {
+  font-size: 2em;
+  padding: 0.5em 0 0.5em 0;
+  font-weight: 600;
+}
+
+.small-print {
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.65);
 }

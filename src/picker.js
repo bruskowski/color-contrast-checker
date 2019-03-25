@@ -63,21 +63,19 @@ const roundedContrast = (foreground, background) => {
 };
 
 function Evaluation({ level }) {
-  const style = {
-    fontSize: ".5em",
-    color: "white",
-    backgroundColor:
-      level === "fail" ? "red" : level === "AA Large" ? "orange" : "green",
-    display: "inline-block",
-    padding: ".25em .5em",
-    borderRadius: 2,
-    border: "1px solid white",
-    margin: ".5em",
-    top: "-.5em",
-    position: "relative",
-  };
-
-  return <div style={style}>{level}</div>;
+  return (
+    <div
+      className={
+        level === "fail"
+          ? "evaluation fail"
+          : level === "AA Large"
+          ? "evaluation large"
+          : "evaluation success"
+      }
+    >
+      {level}
+    </div>
+  );
 }
 
 function Contrast({ foreground, background, isNonText }) {
@@ -94,7 +92,7 @@ function Contrast({ foreground, background, isNonText }) {
     ? "AA Large"
     : "fail";
   return (
-    <div style={{ fontSize: "2em", padding: ".5em" }}>
+    <div className="contrast-info">
       {contrast}:1
       <Evaluation level={level} />
     </div>
@@ -138,164 +136,105 @@ export default function Picker(props) {
 
   return (
     <div
+      className="canvas"
       style={{
-        lineHeight: "1.5",
-        padding: "2em",
         backgroundColor: objToRgb(backgroundColor),
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-          }}
-        >
+      <div className="layout">
+        <div className="examples">
+          <div className="example--control">
+            <div
+              style={{
+                backgroundColor: objToRgba(objectColor),
+                color: objToRgba(textColor),
+              }}
+            >
+              Test
+            </div>
+          </div>
+          <div className="card--info">
+            <div>Contrast Text on Control on Background</div>
+            <Contrast
+              foreground={textColor}
+              background={flattenColor(objectColor, backgroundColor)}
+            />
+            <div className="small-print">
+              Relative Luminosity Text on Control on Background:{" "}
+              {roundedRelativeLuminance(
+                textColor,
+                flattenColor(objectColor, backgroundColor)
+              )}
+            </div>
+            <br />
+            <div>Contrast Control on Background</div>
+            <Contrast
+              foreground={objectColor}
+              background={backgroundColor}
+              isNonText
+            />
+            <div className="small-print">
+              Relative Luminosity Control on Background:{" "}
+              {roundedRelativeLuminance(objectColor, backgroundColor)}
+            </div>
+          </div>
+        </div>
+        <div className="examples">
           <div
+            className="example--text"
             style={{
-              padding: "1em 2em",
-              backgroundColor: objToRgba(objectColor),
               color: objToRgba(textColor),
-              display: "inline-block",
-              borderRadius: "4px",
             }}
           >
-            Test
+            <p>Lorem ipsum …</p>
+          </div>
+          <div className="card--info">
+            <div>Contrast Text on Background</div>
+            <Contrast foreground={textColor} background={backgroundColor} />
+            <div className="small-print">
+              Relative Luminosity Background:{" "}
+              {roundedRelativeLuminance(backgroundColor)}
+            </div>
           </div>
         </div>
-        <div
-          style={{
-            fontSize: ".85em",
-            padding: "1em",
-            margin: ".25em",
-            textAlign: "left",
-            backgroundColor: "rgba(255,255,255,1)",
-            boxShadow:
-              "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.1)",
-            width: "20em",
-            borderRadius: ".33em",
+        <div className="picker-layout">
+          <div className="picker-wrapper">
+            <div class="picker-label">Text Color</div>
+            <SketchPicker
+              color={textColor}
+              disableAlpha={false}
+              presetColors={presets}
+              onChange={(color, event) => updateTextColor(color.rgb)}
+            />
+          </div>
+          <div className="picker-wrapper">
+            <div class="picker-label">Control Color</div>
+            <SketchPicker
+              color={objectColor}
+              disableAlpha={false}
+              presetColors={presets}
+              onChange={(color, event) => updateObjectColor(color.rgb)}
+            />
+          </div>
+          <div className="picker-wrapper">
+            <div class="picker-label">Background Color</div>
+            <SketchPicker
+              color={backgroundColor}
+              disableAlpha={true}
+              presetColors={presets}
+              onChange={(color, event) => updateBackgroundColor(color.rgb)}
+            />
+          </div>
+        </div>
+        <Link
+          className="button"
+          to={{
+            pathname: queryString,
           }}
         >
-          <div>Contrast Text on Object on Background: </div>
-          <Contrast
-            foreground={textColor}
-            background={flattenColor(objectColor, backgroundColor)}
-          />
-          <div>
-            Relative Luminosity Text on Control on Background:{" "}
-            {roundedRelativeLuminance(
-              textColor,
-              flattenColor(objectColor, backgroundColor)
-            )}
-          </div>
-          <br />
-          <div>Contrast Control on Background: </div>
-          <Contrast
-            foreground={objectColor}
-            background={backgroundColor}
-            isNonText
-          />
-          <div>
-            Relative Luminosity Control on Background:{" "}
-            {roundedRelativeLuminance(objectColor, backgroundColor)}
-          </div>
-        </div>
+          Copy to URI
+        </Link>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "2em",
-            width: "50%",
-            textAlign: "center",
-            color: objToRgba(textColor),
-          }}
-        >
-          <p>Lorem ipsum …</p>
-        </div>
-        <div
-          style={{
-            fontSize: ".85em",
-            padding: "1em",
-            textAlign: "left",
-            backgroundColor: "rgba(255,255,255,1)",
-            margin: ".25em",
-            boxShadow:
-              "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.1)",
-            width: "20em",
-            borderRadius: ".33em",
-          }}
-        >
-          <div>Contrast Text on Background Background: </div>
-          <Contrast foreground={textColor} background={backgroundColor} />
-          <div>
-            Relative Luminosity Background:{" "}
-            {roundedRelativeLuminance(backgroundColor)}
-          </div>
-        </div>
-      </div>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
-      >
-        <div style={{ margin: "1em" }}>
-          Text Color:
-          <SketchPicker
-            color={textColor}
-            disableAlpha={false}
-            presetColors={presets}
-            onChange={(color, event) => updateTextColor(color.rgb)}
-          />
-        </div>
-        <div style={{ margin: "1em" }}>
-          Control Color:
-          <SketchPicker
-            color={objectColor}
-            disableAlpha={false}
-            presetColors={presets}
-            onChange={(color, event) => updateObjectColor(color.rgb)}
-          />
-        </div>
-        <div style={{ margin: "1em" }}>
-          Background Color:
-          <SketchPicker
-            color={backgroundColor}
-            disableAlpha={true}
-            presetColors={presets}
-            onChange={(color, event) => updateBackgroundColor(color.rgb)}
-          />
-        </div>
-      </div>
-      <Link
-        style={{
-          color: "#000",
-          fontSize: ".85em",
-          textDecoration: "none",
-          backgroundColor: "rgba(255,255,255,.6)",
-          padding: "calc(1em + 2px) 2em 1em 2em",
-          margin: "3em 2em 2em",
-          display: "inline-block",
-          borderRadius: "2em",
-          boxShadow:
-            "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), inset 0 2px 1px 0 rgba(255,255,255,.8), 0 0 0 1px rgba(0,0,0,.1)",
-        }}
-        to={{
-          pathname: queryString,
-        }}
-      >
-        Save in URL
-      </Link>
     </div>
   );
 }
