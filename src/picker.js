@@ -64,19 +64,20 @@ const roundedContrast = (foreground, background) => {
 
 function Evaluation({ level }) {
   const style = {
-    fontSize: ".65em",
+    fontSize: ".5em",
     color: "white",
     backgroundColor:
       level === "fail" ? "red" : level === "AA Large" ? "orange" : "green",
     display: "inline-block",
-    padding: "2px 4px",
+    padding: ".25em .5em",
     borderRadius: 2,
     border: "1px solid white",
-    margin: 4,
-    marginTop: 0,
+    margin: ".5em",
+    top: "-.5em",
+    position: "relative",
   };
 
-  return <span style={style}>{level}</span>;
+  return <div style={style}>{level}</div>;
 }
 
 function Contrast({ foreground, background, isNonText }) {
@@ -93,10 +94,10 @@ function Contrast({ foreground, background, isNonText }) {
     ? "AA Large"
     : "fail";
   return (
-    <span>
+    <div style={{ fontSize: "2em", padding: ".5em" }}>
       {contrast}:1
       <Evaluation level={level} />
-    </span>
+    </div>
   );
 }
 
@@ -131,9 +132,9 @@ export default function Picker(props) {
     presets = presetDefaults;
   }
 
-  let queryString = `/${objToHex(textColor)}/${objToHex(
+  let queryString = `/${objToHex(textColor).substring(1)}/${objToHex(
     objectColor
-  )}/${objToHex(backgroundColor)}`;
+  ).substring(1)}/${objToHex(backgroundColor).substring(1)}`;
 
   return (
     <div
@@ -144,7 +145,12 @@ export default function Picker(props) {
       }}
     >
       <div
-        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <div
           style={{
@@ -166,55 +172,78 @@ export default function Picker(props) {
         <div
           style={{
             fontSize: ".85em",
-            margin: "1em",
+            padding: "1em",
+            margin: ".25em",
             textAlign: "left",
+            backgroundColor: "rgba(255,255,255,1)",
+            boxShadow:
+              "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.1)",
+            width: "20em",
+            borderRadius: ".33em",
           }}
         >
-          Relative Luminosity Text on Control on Background:{" "}
-          {roundedRelativeLuminance(
-            textColor,
-            flattenColor(objectColor, backgroundColor)
-          )}
-          <br />
-          Contrast Text on Object on Background:{" "}
+          <div>Contrast Text on Object on Background: </div>
           <Contrast
             foreground={textColor}
             background={flattenColor(objectColor, backgroundColor)}
           />
+          <div>
+            Relative Luminosity Text on Control on Background:{" "}
+            {roundedRelativeLuminance(
+              textColor,
+              flattenColor(objectColor, backgroundColor)
+            )}
+          </div>
           <br />
-          Relative Luminosity Control on Background:{" "}
-          {roundedRelativeLuminance(objectColor, backgroundColor)}
-          <br />
-          Contrast Control on Background:{" "}
+          <div>Contrast Control on Background: </div>
           <Contrast
             foreground={objectColor}
             background={backgroundColor}
             isNonText
           />
+          <div>
+            Relative Luminosity Control on Background:{" "}
+            {roundedRelativeLuminance(objectColor, backgroundColor)}
+          </div>
         </div>
       </div>
       <div
-        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <div style={{ fontSize: "2em", width: "50%", textAlign: "center" }}>
+        <div
+          style={{
+            fontSize: "2em",
+            width: "50%",
+            textAlign: "center",
+            color: objToRgba(textColor),
+          }}
+        >
           <p>Lorem ipsum …</p>
         </div>
         <div
           style={{
-            color: objToRgba(textColor),
             fontSize: ".85em",
-            margin: "1em",
+            padding: "1em",
             textAlign: "left",
+            backgroundColor: "rgba(255,255,255,1)",
+            margin: ".25em",
+            boxShadow:
+              "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.1)",
+            width: "20em",
+            borderRadius: ".33em",
           }}
         >
-          <br />
-          Relative Luminosity Background:{" "}
-          {roundedRelativeLuminance(backgroundColor)}
-          <br />
-          Contrast Text on Background Background:{" "}
+          <div>Contrast Text on Background Background: </div>
           <Contrast foreground={textColor} background={backgroundColor} />
-          <br />
-          <br />
+          <div>
+            Relative Luminosity Background:{" "}
+            {roundedRelativeLuminance(backgroundColor)}
+          </div>
         </div>
       </div>
       <div
@@ -259,7 +288,7 @@ export default function Picker(props) {
           display: "inline-block",
           borderRadius: "2em",
           boxShadow:
-            "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), inset 0 2px 1px 0 rgba(255,255,255,.8)",
+            "0 1px 2px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1), inset 0 2px 1px 0 rgba(255,255,255,.8), 0 0 0 1px rgba(0,0,0,.1)",
         }}
         to={{
           pathname: queryString,
