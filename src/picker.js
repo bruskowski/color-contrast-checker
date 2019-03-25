@@ -8,6 +8,8 @@ const hexContrastCheck = require("wcag-contrast").hex;
 
 const presetDefaults = ["#002244", "#0094F0", "#EEF9FF"];
 
+const objWhite = { r: 255, g: 255, b: 255, a: 1 };
+
 const objToHex = colorObj => {
   return chroma(
     `rgba(${colorObj.r},${colorObj.g},${colorObj.b},${colorObj.a})`
@@ -138,7 +140,7 @@ export default function Picker(props) {
     <div
       className="canvas"
       style={{
-        backgroundColor: objToRgb(backgroundColor),
+        backgroundColor: objToRgba(backgroundColor),
       }}
     >
       <div className="layout">
@@ -154,33 +156,42 @@ export default function Picker(props) {
             </div>
           </div>
           <div className="card--info">
-            <div>Contrast Text on Control on Background</div>
+            <div>Contrast Text on Control on Background on White</div>
             <Contrast
               foreground={textColor}
-              background={flattenColor(objectColor, backgroundColor)}
+              background={flattenColor(
+                objectColor,
+                flattenColor(backgroundColor, objWhite)
+              )}
             />
             <div className="small-print">
               Relative Luminosity
               <br />
-              Text on Control on Background:{" "}
+              Text on Control on Background on White:{" "}
               {roundedRelativeLuminance(
                 textColor,
-                flattenColor(objectColor, backgroundColor)
+                flattenColor(
+                  objectColor,
+                  flattenColor(backgroundColor, objWhite)
+                )
               )}
             </div>
             <br />
             <br />
-            <div>Contrast Control on Background</div>
+            <div>Contrast Control on Background on White</div>
             <Contrast
               foreground={objectColor}
-              background={backgroundColor}
+              background={flattenColor(backgroundColor, objWhite)}
               isNonText
             />
             <div className="small-print">
               Relative Luminosity
               <br />
-              Control on Background:{" "}
-              {roundedRelativeLuminance(objectColor, backgroundColor)}
+              Control on Background on White:{" "}
+              {roundedRelativeLuminance(
+                objectColor,
+                flattenColor(backgroundColor, objWhite)
+              )}
             </div>
           </div>
         </div>
@@ -194,12 +205,16 @@ export default function Picker(props) {
             <p>Lorem ipsum …</p>
           </div>
           <div className="card--info">
-            <div>Contrast Text on Background</div>
-            <Contrast foreground={textColor} background={backgroundColor} />
+            <div>Contrast Text on Background on White</div>
+            <Contrast
+              foreground={textColor}
+              background={flattenColor(backgroundColor, objWhite)}
+            />
             <div className="small-print">
               Relative Luminosity
               <br />
-              Background: {roundedRelativeLuminance(backgroundColor)}
+              Background on White:{" "}
+              {roundedRelativeLuminance(backgroundColor, objWhite)}
             </div>
           </div>
         </div>
@@ -226,7 +241,7 @@ export default function Picker(props) {
             <div class="picker-label">Background Color</div>
             <SketchPicker
               color={backgroundColor}
-              disableAlpha={true}
+              disableAlpha={false}
               presetColors={presets}
               onChange={(color, event) => updateBackgroundColor(color.rgb)}
             />
