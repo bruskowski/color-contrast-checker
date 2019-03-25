@@ -34,7 +34,11 @@ function App() {
             the GOV.uk contrast checker on glitch
           </a>
           , made with{" "}
-          <a href="https://codesandbox.io/s/0053my42jp">CodeSandbox</a>
+          <a href="https://codesandbox.io/s/0053my42jp">CodeSandbox</a>. |{" "}
+          <a href="https://github.com/richardbruskowski/color-contrast-checker">
+            GitHub
+          </a>{" "}
+          | <a href="https://twitter.com/bruskowski">Twitter</a>
         </div>
       </Router>
     </div>
