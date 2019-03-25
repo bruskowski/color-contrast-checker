@@ -4,20 +4,8 @@ import getRelativeLuminance from "get-relative-luminance";
 import chroma from "chroma-js";
 
 const hexContrastCheck = require("wcag-contrast").hex;
-const rgbContrastCheck = require("wcag-contrast").rgb;
 
 const presets = ["#002244", "#0094F0", "#EEF9FF"];
-
-const roundedRelativeLuminance = (foreground, background) => {
-  const decimals = 2;
-  return (
-    Math.round(
-      getRelativeLuminance(
-        objToRgb(background ? flattenColor(foreground, background) : foreground)
-      ) * Math.pow(10, decimals)
-    ) / Math.pow(10, decimals)
-  );
-};
 
 const objToHex = colorObj => {
   return chroma(
@@ -42,27 +30,26 @@ const colorStringToObj = rgba => {
   };
 };
 
-const flattenColor = (foreground, background) => {
-  /*console.log(
-    `input flattenColor: rgba(${foreground.r},${foreground.g},${foreground.b},${
-    foreground.a
-    }) + rgba(${background.r},${background.g},${background.b},${background.a})`
-  );*/
+const roundedRelativeLuminance = (foreground, background) => {
+  const decimals = 2;
+  return (
+    Math.round(
+      getRelativeLuminance(
+        objToRgb(background ? flattenColor(foreground, background) : foreground)
+      ) * Math.pow(10, decimals)
+    ) / Math.pow(10, decimals)
+  );
+};
 
+const flattenColor = (foreground, background) => {
   const flatColor = chroma
     .mix(objToRgb(background), objToRgb(foreground), foreground.a)
     .css();
 
-  /*console.log("flattened RGB:" + flatColor);
-  console.log("flattened Hex:" + chroma(flatColor).hex());*/
   return colorStringToObj(flatColor);
 };
 
-const roundedContrastAlpha = (foreground, background) => {
-  //console.log("rounded Arg1: " + foreground);
-  /*const hex1 = flattenColor(foreground, background);
-  const hex2 = chroma(`rgb(${background.r}, ${background.g}, ${background.b})`).hex();
-  console.log(`hex1: ${hex1} – hex2: ${hex2}`);*/
+const roundedContrast = (foreground, background) => {
   const decimals = 2;
   return (
     Math.round(
@@ -91,8 +78,8 @@ function Evaluation({ level }) {
   return <span style={style}>{level}</span>;
 }
 
-function ContrastAlpha({ foreground, background, isNonText }) {
-  const contrast = roundedContrastAlpha(foreground, background);
+function Contrast({ foreground, background, isNonText }) {
+  const contrast = roundedContrast(foreground, background);
   const level = isNonText
     ? contrast >= 3
       ? "AA"
@@ -144,7 +131,7 @@ export default function Picker(props) {
         )}
         <br />
         Contrast Text–Object:{" "}
-        <ContrastAlpha
+        <Contrast
           foreground={textColor}
           background={flattenColor(objectColor, backgroundColor)}
         />
@@ -153,7 +140,7 @@ export default function Picker(props) {
         {roundedRelativeLuminance(objectColor, backgroundColor)}
         <br />
         Contrast Object–Background:{" "}
-        <ContrastAlpha
+        <Contrast
           foreground={objectColor}
           background={backgroundColor}
           isNonText
@@ -170,7 +157,7 @@ export default function Picker(props) {
         {roundedRelativeLuminance(backgroundColor)}
         <br />
         Contrast Text–Background:{" "}
-        <ContrastAlpha foreground={textColor} background={backgroundColor} />
+        <Contrast foreground={textColor} background={backgroundColor} />
         <br />
         <br />
       </div>
