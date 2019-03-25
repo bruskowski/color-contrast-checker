@@ -29,6 +29,14 @@ function App() {
           )}
         />
         <div className="small-print source">
+          Text Large: > 24px or > 18.5px for bold fonts. Learn more:{" "}
+          <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum">
+            Text Contrast
+          </a>{" "}
+          <a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast">
+            Non-text Contrast
+          </a>
+          <br />
           Inspired by{" "}
           <a href="https://contrast-checker.glitch.me/">
             the GOV.uk contrast checker on glitch

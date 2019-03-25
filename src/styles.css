@@ -99,7 +99,7 @@
 }
 
 .canvas {
-  line-height: 1.5;
+  line-height: 1.4;
   padding: 2em;
 }
 
@@ -132,6 +132,7 @@
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 0.0625em;
+  margin: 1em;
 }
 
 .contrast-info {
@@ -147,4 +148,5 @@
 
 .source {
   margin: 2em;
+  line-height: 1.6;
 }

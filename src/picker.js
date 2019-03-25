@@ -45,7 +45,6 @@ const roundedRelativeLuminance = (foreground, background) => {
 };
 
 const flattenColor = (foreground, background) => {
-  console.log(foreground.a);
   const flatColor = chroma
     .mix(objToRgb(background), objToRgb(foreground), foreground.a, "rgb")
     .css();
