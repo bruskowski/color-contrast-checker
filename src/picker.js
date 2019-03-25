@@ -176,8 +176,7 @@ export default function Picker(props) {
                 flattenColor(backgroundColor, objWhite)
               )}
             />
-            <br />
-            <br />
+
             <div className="card-title">Contrast Control</div>
             <div className="small-print">
               Control ↔︎ Background on White.
