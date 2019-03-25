@@ -150,7 +150,7 @@ export default function Picker(props) {
                 color: objToRgba(textColor),
               }}
             >
-              Test
+              Text on Control
             </div>
           </div>
           <div className="card--info">

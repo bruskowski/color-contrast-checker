@@ -127,6 +127,9 @@
   padding: 1em 2em;
   display: inline-block;
   border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.0625em;
 }
 
 .contrast-info {
