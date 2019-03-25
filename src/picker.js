@@ -1,38 +1,53 @@
 import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 import getRelativeLuminance from "get-relative-luminance";
-var hexContrastCheck = require("wcag-contrast").hex;
+import chroma from "chroma-js";
+
+const hexContrastCheck = require("wcag-contrast").hex;
+const rgbContrastCheck = require("wcag-contrast").rgb;
 
 const presets = ["#002244", "#0094F0", "#EEF9FF"];
 
-const roundedRelativeLuminance = hex => {
+const roundedRelativeLuminance = rgba => {
   const decimals = 2;
   return (
-    Math.round(getRelativeLuminance(hex) * Math.pow(10, decimals)) /
-    Math.pow(10, decimals)
+    Math.round(
+      getRelativeLuminance(`rgb(${rgba.r}, ${rgba.g}, ${rgba.b})`) *
+        Math.pow(10, decimals)
+    ) / Math.pow(10, decimals)
   );
 };
 
-const roundedContrast = (hex1, hex2) => {
+const flattenColor = (rgba1, rgba2) => {
+  console.log(
+    `input flattenColor: rgba(${rgba1.r},${rgba1.g},${rgba1.b},${
+      rgba1.a
+    }) + rgba(${rgba2.r},${rgba2.g},${rgba2.b},${rgba2.a})`
+  );
+
+  const flatColor = chroma
+    .mix(
+      `rgb(${rgba2.r}, ${rgba2.g}, ${rgba2.b})`,
+      `rgb(${rgba1.r}, ${rgba1.g}, ${rgba1.b})`,
+      rgba1.a
+    )
+    .css();
+
+  console.log("flattened RGB:" + flatColor);
+  console.log("flattened Hex:" + chroma(flatColor).hex());
+  return chroma(flatColor).hex();
+};
+
+const roundedContrastAlpha = (rgba1, rgba2) => {
+  console.log("rounded Arg1: " + rgba1);
+  const hex1 = flattenColor(rgba1, rgba2);
+  const hex2 = chroma(`rgb(${rgba2.r}, ${rgba2.g}, ${rgba2.b})`).hex();
+  console.log(`hex1: ${hex1} – hex2: ${hex2}`);
   const decimals = 2;
   return (
     Math.round(hexContrastCheck(hex1, hex2) * Math.pow(10, decimals)) /
     Math.pow(10, decimals)
   );
-};
-
-const contrast = (hex1, hex2) => {
-  const contrast = roundedContrast(hex1, hex2);
-  const level =
-    contrast >= 7
-      ? "AAA"
-      : contrast >= 4.5
-      ? "AA"
-      : contrast >= 3
-      ? "AA Large"
-      : "fail";
-
-  return contrast + ":1 " + level;
 };
 
 function Evaluation({ level }) {
@@ -52,8 +67,8 @@ function Evaluation({ level }) {
   return <span style={style}>{level}</span>;
 }
 
-function Contrast({ hex1, hex2, isNonText }) {
-  const contrast = roundedContrast(hex1, hex2);
+function ContrastAlpha({ rgba1, rgba2, isNonText }) {
+  const contrast = roundedContrastAlpha(rgba1, rgba2);
   const level = isNonText
     ? contrast >= 3
       ? "AA"
@@ -74,39 +89,63 @@ function Contrast({ hex1, hex2, isNonText }) {
 }
 
 export default function Picker(props) {
-  const [textColor, updateTextColor] = useState("#002244");
-  const [objectColor, updateObjectColor] = useState("#0094F0");
-  const [backgroundColor, updateBackgroundColor] = useState("#EEF9FF");
+  const [textColor, updateTextColor] = useState({
+    r: chroma("#002244").get("rgb.r"),
+    g: chroma("#002244").get("rgb.g"),
+    b: chroma("#002244").get("rgb.b"),
+    a: 1,
+  });
+  const [objectColor, updateObjectColor] = useState({
+    r: chroma("#0094F0").get("rgb.r"),
+    g: chroma("#0094F0").get("rgb.g"),
+    b: chroma("#0094F0").get("rgb.b"),
+    a: 1,
+  });
+  const [backgroundColor, updateBackgroundColor] = useState({
+    r: chroma("#EEF9FF").get("rgb.r"),
+    g: chroma("#EEF9FF").get("rgb.g"),
+    b: chroma("#EEF9FF").get("rgb.b"),
+    a: 1,
+  });
 
   return (
     <div
       style={{
         lineHeight: "1.5",
         padding: "2em",
-        backgroundColor: backgroundColor,
+        backgroundColor: `rgba(${backgroundColor.r},${backgroundColor.g},${
+          backgroundColor.b
+        },${backgroundColor.a})`,
       }}
     >
       <div
         style={{
           padding: "1em",
-          backgroundColor: objectColor,
-          color: textColor,
+          backgroundColor: `rgba(${objectColor.r},${objectColor.g},${
+            objectColor.b
+          },${objectColor.a})`,
+          color: `rgba(${textColor.r},${textColor.g},${textColor.b},${
+            textColor.a
+          })`,
           display: "inline-block",
         }}
       >
         Relative Luminosity Text: {roundedRelativeLuminance(textColor)}
         <br />
-        Contrast Text–Object: <Contrast hex1={textColor} hex2={objectColor} />
+        Contrast Text–Object:{" "}
+        <ContrastAlpha rgba1={textColor} rgba2={objectColor} />
         <br />
         Relative Luminosity Object: {roundedRelativeLuminance(objectColor)}
         <br />
         Contrast Object–Background:{" "}
-        <Contrast hex1={objectColor} hex2={backgroundColor} isNonText />
+        <ContrastAlpha rgba1={objectColor} rgba2={backgroundColor} isNonText />
       </div>
       <div
         style={{
           padding: "1em",
-          color: textColor,
+          color: `rgba(${textColor.r},${textColor.g},${textColor.b},${
+            textColor.a
+          })`,
         }}
       >
         <br />
@@ -114,7 +153,7 @@ export default function Picker(props) {
         {roundedRelativeLuminance(backgroundColor)}
         <br />
         Contrast Text–Background:{" "}
-        <Contrast hex1={textColor} hex2={backgroundColor} />
+        <ContrastAlpha rgba1={textColor} rgba2={backgroundColor} />
         <br />
         <br />
       </div>
@@ -122,17 +161,17 @@ export default function Picker(props) {
         <div>
           <SketchPicker
             color={textColor}
-            disableAlpha={true}
+            disableAlpha={false}
             presetColors={presets}
-            onChange={(color, event) => updateTextColor(color.hex)}
+            onChange={(color, event) => updateTextColor(color.rgb)}
           />
         </div>
         <div>
           <SketchPicker
             color={objectColor}
-            disableAlpha={true}
+            disableAlpha={false}
             presetColors={presets}
-            onChange={(color, event) => updateObjectColor(color.hex)}
+            onChange={(color, event) => updateObjectColor(color.rgb)}
           />
         </div>
         <div>
@@ -140,7 +179,7 @@ export default function Picker(props) {
             color={backgroundColor}
             disableAlpha={true}
             presetColors={presets}
-            onChange={(color, event) => updateBackgroundColor(color.hex)}
+            onChange={(color, event) => updateBackgroundColor(color.rgb)}
           />
         </div>
       </div>
