@@ -26,7 +26,7 @@
   display: inline-block;
   border-radius: 2em;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
-    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 1px 1px rgba(0, 0, 0, 0.5);
   transition: all ease-out 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.06125em;
@@ -36,15 +36,15 @@
 .button:hover {
   transform: translateY(-2px);
   background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.05),
-    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 8px 0 rgba(0, 0, 0, 0.07),
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .button:active {
   transform: translateY(0);
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0), 0 2px 4px 0 rgba(0, 0, 0, 0),
-    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    inset 0 2px 1px 0 rgba(255, 255, 255, 0.8), 0 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .picker-layout {
