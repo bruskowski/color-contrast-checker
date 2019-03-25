@@ -121,9 +121,25 @@
 }
 
 .example--text {
-  font-size: 2em;
+  font-size: 1em;
   width: 50%;
-  text-align: center;
+  text-align: left;
+  margin-top: 1em;
+}
+
+.example--text p {
+  margin: 0 auto;
+  max-width: 20rem;
+}
+
+.example--text p.larger {
+  font-size: 24px;
+}
+
+.example--text p.bolder {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 .example--control {

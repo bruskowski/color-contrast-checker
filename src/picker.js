@@ -160,7 +160,7 @@ export default function Picker(props) {
             <div className="small-print">
               Text ↔︎ Control on Background on White.
               <br />
-              Relative Luminosity:{" "}
+              Relative Luminosity Text:{" "}
               {roundedRelativeLuminance(
                 textColor,
                 flattenColor(
@@ -182,7 +182,7 @@ export default function Picker(props) {
             <div className="small-print">
               Control ↔︎ Background on White.
               <br />
-              Relative Luminosity:{" "}
+              Relative Luminosity Control:{" "}
               {roundedRelativeLuminance(
                 objectColor,
                 flattenColor(backgroundColor, objWhite)
@@ -202,14 +202,20 @@ export default function Picker(props) {
               color: objToRgba(textColor),
             }}
           >
-            <p>Lorem ipsum …</p>
+            <p className="larger">Large text on background</p>
+            <p>
+              Regular text on background. AA Large applies to text with a font
+              size of at least 24px or larger and regular font weight as well as
+              text which is …{" "}
+            </p>
+            <p className="bolder">larger than 18.5px and bold.</p>
           </div>
           <div className="card-info">
             <div className="card-title">Contrast Text</div>
             <div className="small-print">
               Text ↔︎ Background on White.
               <br />
-              Relative Luminosity:{" "}
+              Relative Luminosity Background:{" "}
               {roundedRelativeLuminance(backgroundColor, objWhite)}
             </div>
             <Contrast
@@ -220,7 +226,17 @@ export default function Picker(props) {
         </div>
         <div className="picker-layout">
           <div className="picker-wrapper">
-            <div class="picker-label">Text Color</div>
+            <div
+              class="picker-label"
+              style={{
+                color:
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                    ? "#000"
+                    : "#FFF",
+              }}
+            >
+              Text Color
+            </div>
             <SketchPicker
               color={textColor}
               disableAlpha={false}
@@ -229,7 +245,17 @@ export default function Picker(props) {
             />
           </div>
           <div className="picker-wrapper">
-            <div class="picker-label">Control Color</div>
+            <div
+              class="picker-label"
+              style={{
+                color:
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                    ? "#000"
+                    : "#FFF",
+              }}
+            >
+              Control Color
+            </div>
             <SketchPicker
               color={objectColor}
               disableAlpha={false}
@@ -238,7 +264,17 @@ export default function Picker(props) {
             />
           </div>
           <div className="picker-wrapper">
-            <div class="picker-label">Background Color</div>
+            <div
+              class="picker-label"
+              style={{
+                color:
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                    ? "#000"
+                    : "#FFF",
+              }}
+            >
+              Background Color
+            </div>
             <SketchPicker
               color={backgroundColor}
               disableAlpha={false}
