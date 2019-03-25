@@ -230,7 +230,7 @@ export default function Picker(props) {
               class="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
@@ -249,7 +249,7 @@ export default function Picker(props) {
               class="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
@@ -268,7 +268,7 @@ export default function Picker(props) {
               class="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
