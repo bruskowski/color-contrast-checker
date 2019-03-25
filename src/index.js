@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Router>
         <Route
-          path="/:foreground?/:object?/:background?/:swatch4?/:swatch5?/:swatch6?/:swatch7?/:swatch8?"
+          path="/:foreground?/:object?/:background?/:swatch4?/:swatch5?/:swatch6?/:swatch7?/:swatch8?/:swatch9?/:swatch10?"
           render={({ match }) => (
             <Picker
               foreground={match.params.foreground}
@@ -22,6 +22,8 @@ function App() {
                 match.params.swatch6,
                 match.params.swatch7,
                 match.params.swatch8,
+                match.params.swatch9,
+                match.params.swatch10,
               ]}
             />
           )}
