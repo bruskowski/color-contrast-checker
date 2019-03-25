@@ -26,6 +26,14 @@ function App() {
             />
           )}
         />
+        <div className="small-print source">
+          Inspired by{" "}
+          <a href="https://contrast-checker.glitch.me/">
+            the GOV.uk contrast checker on glitch
+          </a>
+          , made with{" "}
+          <a href="https://codesandbox.io/s/0053my42jp">CodeSandbox</a>
+        </div>
       </Router>
     </div>
   );

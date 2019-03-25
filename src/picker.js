@@ -160,12 +160,15 @@ export default function Picker(props) {
               background={flattenColor(objectColor, backgroundColor)}
             />
             <div className="small-print">
-              Relative Luminosity Text on Control on Background:{" "}
+              Relative Luminosity
+              <br />
+              Text on Control on Background:{" "}
               {roundedRelativeLuminance(
                 textColor,
                 flattenColor(objectColor, backgroundColor)
               )}
             </div>
+            <br />
             <br />
             <div>Contrast Control on Background</div>
             <Contrast
@@ -174,7 +177,9 @@ export default function Picker(props) {
               isNonText
             />
             <div className="small-print">
-              Relative Luminosity Control on Background:{" "}
+              Relative Luminosity
+              <br />
+              Control on Background:{" "}
               {roundedRelativeLuminance(objectColor, backgroundColor)}
             </div>
           </div>
@@ -192,8 +197,9 @@ export default function Picker(props) {
             <div>Contrast Text on Background</div>
             <Contrast foreground={textColor} background={backgroundColor} />
             <div className="small-print">
-              Relative Luminosity Background:{" "}
-              {roundedRelativeLuminance(backgroundColor)}
+              Relative Luminosity
+              <br />
+              Background: {roundedRelativeLuminance(backgroundColor)}
             </div>
           </div>
         </div>
