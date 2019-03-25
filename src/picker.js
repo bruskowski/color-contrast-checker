@@ -100,12 +100,24 @@ function Contrast({ foreground, background, isNonText }) {
 }
 
 export default function Picker(props) {
-  const [textColor, updateTextColor] = useState(colorStringToObj("#002244"));
+  const [textColor, updateTextColor] = useState(
+    colorStringToObj(
+      chroma.valid(props.foreground)
+        ? chroma(props.foreground).hex()
+        : "#002244"
+    )
+  );
   const [objectColor, updateObjectColor] = useState(
-    colorStringToObj("#0094F0")
+    colorStringToObj(
+      chroma.valid(props.object) ? chroma(props.object).hex() : "#0094F0"
+    )
   );
   const [backgroundColor, updateBackgroundColor] = useState(
-    colorStringToObj("#EEF9FF")
+    colorStringToObj(
+      chroma.valid(props.background)
+        ? chroma(props.background).hex()
+        : "#EEF9FF"
+    )
   );
 
   return (
