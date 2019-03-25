@@ -8,45 +8,69 @@ const rgbContrastCheck = require("wcag-contrast").rgb;
 
 const presets = ["#002244", "#0094F0", "#EEF9FF"];
 
-const roundedRelativeLuminance = rgba => {
+const roundedRelativeLuminance = (foreground, background) => {
   const decimals = 2;
   return (
     Math.round(
-      getRelativeLuminance(`rgb(${rgba.r}, ${rgba.g}, ${rgba.b})`) *
-        Math.pow(10, decimals)
+      getRelativeLuminance(
+        objToRgb(background ? flattenColor(foreground, background) : foreground)
+      ) * Math.pow(10, decimals)
     ) / Math.pow(10, decimals)
   );
 };
 
-const flattenColor = (rgba1, rgba2) => {
-  console.log(
-    `input flattenColor: rgba(${rgba1.r},${rgba1.g},${rgba1.b},${
-      rgba1.a
-    }) + rgba(${rgba2.r},${rgba2.g},${rgba2.b},${rgba2.a})`
-  );
-
-  const flatColor = chroma
-    .mix(
-      `rgb(${rgba2.r}, ${rgba2.g}, ${rgba2.b})`,
-      `rgb(${rgba1.r}, ${rgba1.g}, ${rgba1.b})`,
-      rgba1.a
-    )
-    .css();
-
-  console.log("flattened RGB:" + flatColor);
-  console.log("flattened Hex:" + chroma(flatColor).hex());
-  return chroma(flatColor).hex();
+const objToHex = colorObj => {
+  return chroma(
+    `rgba(${colorObj.r},${colorObj.g},${colorObj.b},${colorObj.a})`
+  ).hex();
 };
 
-const roundedContrastAlpha = (rgba1, rgba2) => {
-  console.log("rounded Arg1: " + rgba1);
-  const hex1 = flattenColor(rgba1, rgba2);
-  const hex2 = chroma(`rgb(${rgba2.r}, ${rgba2.g}, ${rgba2.b})`).hex();
-  console.log(`hex1: ${hex1} – hex2: ${hex2}`);
+const objToRgba = colorObj => {
+  return `rgba(${colorObj.r},${colorObj.g},${colorObj.b},${colorObj.a})`;
+};
+
+const objToRgb = colorObj => {
+  return `rgb(${colorObj.r},${colorObj.g},${colorObj.b})`;
+};
+
+const colorStringToObj = rgba => {
+  return {
+    r: chroma(rgba).get("rgb.r"),
+    g: chroma(rgba).get("rgb.g"),
+    b: chroma(rgba).get("rgb.b"),
+    a: chroma(rgba).alpha(),
+  };
+};
+
+const flattenColor = (foreground, background) => {
+  /*console.log(
+    `input flattenColor: rgba(${foreground.r},${foreground.g},${foreground.b},${
+    foreground.a
+    }) + rgba(${background.r},${background.g},${background.b},${background.a})`
+  );*/
+
+  const flatColor = chroma
+    .mix(objToRgb(background), objToRgb(foreground), foreground.a)
+    .css();
+
+  /*console.log("flattened RGB:" + flatColor);
+  console.log("flattened Hex:" + chroma(flatColor).hex());*/
+  return colorStringToObj(flatColor);
+};
+
+const roundedContrastAlpha = (foreground, background) => {
+  //console.log("rounded Arg1: " + foreground);
+  /*const hex1 = flattenColor(foreground, background);
+  const hex2 = chroma(`rgb(${background.r}, ${background.g}, ${background.b})`).hex();
+  console.log(`hex1: ${hex1} – hex2: ${hex2}`);*/
   const decimals = 2;
   return (
-    Math.round(hexContrastCheck(hex1, hex2) * Math.pow(10, decimals)) /
-    Math.pow(10, decimals)
+    Math.round(
+      hexContrastCheck(
+        objToHex(flattenColor(foreground, background)),
+        objToHex(background)
+      ) * Math.pow(10, decimals)
+    ) / Math.pow(10, decimals)
   );
 };
 
@@ -67,8 +91,8 @@ function Evaluation({ level }) {
   return <span style={style}>{level}</span>;
 }
 
-function ContrastAlpha({ rgba1, rgba2, isNonText }) {
-  const contrast = roundedContrastAlpha(rgba1, rgba2);
+function ContrastAlpha({ foreground, background, isNonText }) {
+  const contrast = roundedContrastAlpha(foreground, background);
   const level = isNonText
     ? contrast >= 3
       ? "AA"
@@ -89,63 +113,56 @@ function ContrastAlpha({ rgba1, rgba2, isNonText }) {
 }
 
 export default function Picker(props) {
-  const [textColor, updateTextColor] = useState({
-    r: chroma("#002244").get("rgb.r"),
-    g: chroma("#002244").get("rgb.g"),
-    b: chroma("#002244").get("rgb.b"),
-    a: 1,
-  });
-  const [objectColor, updateObjectColor] = useState({
-    r: chroma("#0094F0").get("rgb.r"),
-    g: chroma("#0094F0").get("rgb.g"),
-    b: chroma("#0094F0").get("rgb.b"),
-    a: 1,
-  });
-  const [backgroundColor, updateBackgroundColor] = useState({
-    r: chroma("#EEF9FF").get("rgb.r"),
-    g: chroma("#EEF9FF").get("rgb.g"),
-    b: chroma("#EEF9FF").get("rgb.b"),
-    a: 1,
-  });
+  const [textColor, updateTextColor] = useState(colorStringToObj("#002244"));
+  const [objectColor, updateObjectColor] = useState(
+    colorStringToObj("#0094F0")
+  );
+  const [backgroundColor, updateBackgroundColor] = useState(
+    colorStringToObj("#EEF9FF")
+  );
 
   return (
     <div
       style={{
         lineHeight: "1.5",
         padding: "2em",
-        backgroundColor: `rgba(${backgroundColor.r},${backgroundColor.g},${
-          backgroundColor.b
-        },${backgroundColor.a})`,
+        backgroundColor: objToRgb(backgroundColor),
       }}
     >
       <div
         style={{
           padding: "1em",
-          backgroundColor: `rgba(${objectColor.r},${objectColor.g},${
-            objectColor.b
-          },${objectColor.a})`,
-          color: `rgba(${textColor.r},${textColor.g},${textColor.b},${
-            textColor.a
-          })`,
+          backgroundColor: objToRgba(objectColor),
+          color: objToRgba(textColor),
           display: "inline-block",
         }}
       >
-        Relative Luminosity Text: {roundedRelativeLuminance(textColor)}
+        Relative Luminosity Text:{" "}
+        {roundedRelativeLuminance(
+          textColor,
+          flattenColor(objectColor, backgroundColor)
+        )}
         <br />
         Contrast Text–Object:{" "}
-        <ContrastAlpha rgba1={textColor} rgba2={objectColor} />
+        <ContrastAlpha
+          foreground={textColor}
+          background={flattenColor(objectColor, backgroundColor)}
+        />
         <br />
-        Relative Luminosity Object: {roundedRelativeLuminance(objectColor)}
+        Relative Luminosity Object:{" "}
+        {roundedRelativeLuminance(objectColor, backgroundColor)}
         <br />
         Contrast Object–Background:{" "}
-        <ContrastAlpha rgba1={objectColor} rgba2={backgroundColor} isNonText />
+        <ContrastAlpha
+          foreground={objectColor}
+          background={backgroundColor}
+          isNonText
+        />
       </div>
       <div
         style={{
           padding: "1em",
-          color: `rgba(${textColor.r},${textColor.g},${textColor.b},${
-            textColor.a
-          })`,
+          color: objToRgba(textColor),
         }}
       >
         <br />
@@ -153,7 +170,7 @@ export default function Picker(props) {
         {roundedRelativeLuminance(backgroundColor)}
         <br />
         Contrast Text–Background:{" "}
-        <ContrastAlpha rgba1={textColor} rgba2={backgroundColor} />
+        <ContrastAlpha foreground={textColor} background={backgroundColor} />
         <br />
         <br />
       </div>
