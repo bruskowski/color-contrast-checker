@@ -161,8 +161,11 @@ export default function Picker(props) {
         <br />
         <br />
       </div>
-      <div style={{ display: "flex" }}>
-        <div>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+      >
+        <div style={{ margin: "1em" }}>
+          Text Color:
           <SketchPicker
             color={textColor}
             disableAlpha={false}
@@ -170,7 +173,8 @@ export default function Picker(props) {
             onChange={(color, event) => updateTextColor(color.rgb)}
           />
         </div>
-        <div>
+        <div style={{ margin: "1em" }}>
+          Control Color:
           <SketchPicker
             color={objectColor}
             disableAlpha={false}
@@ -178,7 +182,8 @@ export default function Picker(props) {
             onChange={(color, event) => updateObjectColor(color.rgb)}
           />
         </div>
-        <div>
+        <div style={{ margin: "1em" }}>
+          Background Color:
           <SketchPicker
             color={backgroundColor}
             disableAlpha={true}
