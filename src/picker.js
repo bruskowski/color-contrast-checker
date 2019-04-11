@@ -226,7 +226,7 @@ export default function Picker(props) {
         <div className="picker-layout">
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
@@ -245,7 +245,7 @@ export default function Picker(props) {
           </div>
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
