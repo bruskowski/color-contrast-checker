@@ -135,6 +135,9 @@ export default function Picker(props) {
   let queryString = `/${objToHex(textColor).substring(1)}/${objToHex(
     objectColor
   ).substring(1)}/${objToHex(backgroundColor).substring(1)}`;
+  queryString = props.swatches.length
+    ? queryString + "/" + props.swatches.join("/")
+    : queryString;
 
   return (
     <div
@@ -264,7 +267,7 @@ export default function Picker(props) {
           </div>
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
