@@ -135,6 +135,9 @@ export default function Picker(props) {
   let queryString = `/${objToHex(textColor).substring(1)}/${objToHex(
     objectColor
   ).substring(1)}/${objToHex(backgroundColor).substring(1)}`;
+  queryString = props.swatches.length
+    ? queryString + "/" + props.swatches.join("/")
+    : queryString;
 
   return (
     <div
@@ -176,8 +179,7 @@ export default function Picker(props) {
                 flattenColor(backgroundColor, objWhite)
               )}
             />
-            <br />
-            <br />
+
             <div className="card-title">Contrast Control</div>
             <div className="small-print">
               Control ↔︎ Background on White.
@@ -227,10 +229,10 @@ export default function Picker(props) {
         <div className="picker-layout">
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
@@ -246,10 +248,10 @@ export default function Picker(props) {
           </div>
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
@@ -265,10 +267,10 @@ export default function Picker(props) {
           </div>
           <div className="picker-wrapper">
             <div
-              class="picker-label"
+              className="picker-label"
               style={{
                 color:
-                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.18
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
                     : "#FFF",
               }}
