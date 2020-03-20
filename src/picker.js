@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { SketchPicker } from "react-color";
 import getRelativeLuminance from "get-relative-luminance";
 import chroma from "chroma-js";
+import SAPCbasic from "./sapc";
 
 const hexContrastCheck = require("wcag-contrast").hex;
 
@@ -29,7 +30,7 @@ const colorStringToObj = rgba => {
     r: chroma(rgba).get("rgb.r"),
     g: chroma(rgba).get("rgb.g"),
     b: chroma(rgba).get("rgb.b"),
-    a: chroma(rgba).alpha(),
+    a: chroma(rgba).alpha()
   };
 };
 
@@ -97,6 +98,67 @@ function Contrast({ foreground, background, isNonText }) {
     <div className="contrast-info">
       {contrast}:1
       <Evaluation level={level} />
+      <ContrastSapc
+        foreground={flattenColor(foreground, background)}
+        background={background}
+        isNonText={isNonText}
+      />
+    </div>
+  );
+}
+
+function ContrastSapc({ foreground, background, isNonText }) {
+  const sapc = SAPCbasic(
+    background.r,
+    background.g,
+    background.b,
+    foreground.r,
+    foreground.g,
+    foreground.b
+  );
+
+  return (
+    <div
+      style={{
+        fontSize: 13,
+        lineHeight: 1.05,
+        display: "inline",
+        fontWeight: "normal",
+        padding: 4,
+        float: "right",
+        textAlign: "right",
+        color: "black"
+      }}
+    >
+      {sapc}{" "}
+      <span
+        style={{
+          color: isNonText
+            ? Math.abs(parseInt(sapc, 10)) >= 65
+              ? "rgb(0, 160, 0)"
+              : "rgb(180, 0, 0)"
+            : Math.abs(parseInt(sapc, 10)) >= 70
+            ? "rgb(0, 160, 0)"
+            : Math.abs(parseInt(sapc, 10)) >= 65
+            ? "rgb(200, 160, 0)"
+            : "rgb(200, 0, 0)"
+        }}
+      >
+        ■
+      </span>
+      <br />
+      <span style={{ fontSize: ".75em" }}>
+        <span role="img" aria-label="caution">
+          ⚠️
+        </span>{" "}
+        <a
+          style={{ color: "inherit" }}
+          href="https://github.com/w3c/wcag/issues/695"
+        >
+          SAPC
+        </a>{" "}
+        Beta
+      </span>
     </div>
   );
 }
@@ -143,7 +205,7 @@ export default function Picker(props) {
     <div
       className="canvas"
       style={{
-        backgroundColor: objToRgba(backgroundColor),
+        backgroundColor: objToRgba(backgroundColor)
       }}
     >
       <div className="layout">
@@ -152,11 +214,24 @@ export default function Picker(props) {
             <div
               style={{
                 backgroundColor: objToRgba(objectColor),
-                color: objToRgba(textColor),
+                color: objToRgba(textColor)
               }}
             >
               Text on Control
             </div>
+            <small style={{ display: "block", textAlign: "left" }}>
+              <span role="img" aria-label="caution">
+                ⚠️
+              </span>{" "}
+              Button boundaries are not required mandatorily to fulfill these
+              contrast criteria.{" "}
+              <a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast#intent">
+                Learn more about Non-Text Contrast.
+              </a>{" "}
+              Better examples might be slider bars and knobs, switches, toggles
+              and other controls that need more graphical cues to work than a
+              text label or icon alone.
+            </small>
           </div>
           <div className="card-info">
             <div className="card-title">Contrast Text on Control</div>
@@ -201,7 +276,7 @@ export default function Picker(props) {
           <div
             className="example--text"
             style={{
-              color: objToRgba(textColor),
+              color: objToRgba(textColor)
             }}
           >
             <p className="larger">Large text on background</p>
@@ -234,7 +309,7 @@ export default function Picker(props) {
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
-                    : "#FFF",
+                    : "#FFF"
               }}
             >
               Text Color
@@ -253,7 +328,7 @@ export default function Picker(props) {
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
-                    : "#FFF",
+                    : "#FFF"
               }}
             >
               Control Color
@@ -272,7 +347,7 @@ export default function Picker(props) {
                 color:
                   roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
                     ? "#000"
-                    : "#FFF",
+                    : "#FFF"
               }}
             >
               Background Color
@@ -288,7 +363,7 @@ export default function Picker(props) {
         <Link
           className="button"
           to={{
-            pathname: queryString,
+            pathname: queryString
           }}
         >
           Copy to URI
