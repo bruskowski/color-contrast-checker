@@ -219,13 +219,26 @@ export default function Picker(props) {
             >
               Text on Control
             </div>
-            <small style={{ display: "block", textAlign: "left" }}>
+            <small
+              style={{
+                color:
+                  roundedRelativeLuminance(backgroundColor, objWhite) > 0.17
+                    ? "#000"
+                    : "#FFF",
+                display: "block",
+                opacity: 0.7,
+                textAlign: "left"
+              }}
+            >
               <span role="img" aria-label="caution">
                 ⚠️
               </span>{" "}
               Button boundaries are not required mandatorily to fulfill these
               contrast criteria.{" "}
-              <a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast#intent">
+              <a
+                style={{ color: "inherit" }}
+                href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast#intent"
+              >
                 Learn more about Non-Text Contrast.
               </a>{" "}
               Better examples might be slider bars and knobs, switches, toggles
