@@ -20,28 +20,25 @@ function App() {
 					)}
 				/>
 				<div className="small-print source">
-					AA Large applies to text > 24px or > 18.5px for bold fonts.
-					Learn more:{' '}
-					<a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum">
-						Text Contrast
-					</a>{' '}
-					<a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast">
-						Non-text Contrast
-					</a>
+					AA Large applies to text > 24px or > 18.5px for bold fonts. Learn more:{' '}
+					<a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum">Text Contrast</a>{' '}
+					<a href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast">Non-text Contrast</a>
 					<br />
-					Inspired by{' '}
-					<a href="https://contrast-checker.glitch.me/">
-						the GOV.uk contrast checker on glitch
+					Inspired by <a href="https://contrast-checker.glitch.me/">the GOV.uk contrast checker on glitch</a>,
+					made with{' '}
+					<a href="https://codesandbox.io/s/github/richardbruskowski/color-contrast-checker">CodeSandbox</a>.
+					| <a href="https://github.com/richardbruskowski/color-contrast-checker">GitHub</a>
+					<br />
+					Made by{' '}
+					<a href="https://bruskowski.design">
+						<img
+							src="https:/bruskowski.design/icons/icon-48x48.png"
+							width={24}
+							height={24}
+							style={{ verticalAlign: 'middle' }}
+						/>{' '}
+						bruskowski.design
 					</a>
-					, made with{' '}
-					<a href="https://codesandbox.io/s/github/richardbruskowski/color-contrast-checker">
-						CodeSandbox
-					</a>
-					. |{' '}
-					<a href="https://github.com/richardbruskowski/color-contrast-checker">
-						GitHub
-					</a>{' '}
-					| <a href="https://twitter.com/bruskowski">Twitter</a>
 				</div>
 			</Router>
 		</div>
