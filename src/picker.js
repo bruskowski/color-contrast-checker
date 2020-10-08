@@ -119,7 +119,7 @@ function ContrastSapc({ foreground, background, isNonText }) {
 						? Math.abs(parseInt(sapc, 10)) >= 65
 							? 'rgb(0, 160, 0)'
 							: 'rgb(180, 0, 0)'
-						: Math.abs(parseInt(sapc, 10)) >= 70
+						: Math.abs(parseInt(sapc, 10)) >= 80
 						? 'rgb(0, 160, 0)'
 						: Math.abs(parseInt(sapc, 10)) >= 65
 						? 'rgb(200, 160, 0)'
