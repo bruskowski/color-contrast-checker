@@ -5,14 +5,14 @@
 	"keywords": [],
 	"main": "src/index.js",
 	"dependencies": {
-		"chroma-js": "2.0.3",
-		"get-relative-luminance": "0.1.2",
-		"react": "16.8.0",
-		"react-color": "2.17.0",
-		"react-dom": "16.8.0",
-		"react-router-dom": "5.0.0",
-		"react-scripts": "2.0.3",
-		"wcag-contrast": "2.1.1"
+		"chroma-js": "^2.0.3",
+		"get-relative-luminance": "^1.0.0",
+		"react": "^16.8.0",
+		"react-color": "^2.17.0",
+		"react-dom": "^16.8.0",
+		"react-router-dom": "^5.0.0",
+		"react-scripts": "^2.0.3",
+		"wcag-contrast": "^2.1.1"
 	},
 	"devDependencies": {},
 	"scripts": {
