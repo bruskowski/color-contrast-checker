@@ -12,9 +12,7 @@ const presetDefaults = ['#002244', '#0094F0', '#EEF9FF']
 const objWhite = { r: 255, g: 255, b: 255, a: 1 }
 
 const objToHex = colorObj => {
-	return chroma(
-		`rgba(${colorObj.r},${colorObj.g},${colorObj.b},${colorObj.a})`
-	).hex()
+	return chroma(`rgba(${colorObj.r},${colorObj.g},${colorObj.b},${colorObj.a})`).hex()
 }
 
 const objToRgba = colorObj => {
@@ -38,21 +36,14 @@ const roundedRelativeLuminance = (foreground, background) => {
 	const decimals = 2
 	return (
 		Math.round(
-			getRelativeLuminance(
-				objToRgb(
-					background
-						? flattenColor(foreground, background)
-						: foreground
-				)
-			) * Math.pow(10, decimals)
+			getRelativeLuminance(objToRgb(background ? flattenColor(foreground, background) : foreground)) *
+				Math.pow(10, decimals)
 		) / Math.pow(10, decimals)
 	)
 }
 
 const flattenColor = (foreground, background) => {
-	const flatColor = chroma
-		.mix(objToRgb(background), objToRgb(foreground), foreground.a, 'rgb')
-		.css()
+	const flatColor = chroma.mix(objToRgb(background), objToRgb(foreground), foreground.a, 'rgb').css()
 
 	return colorStringToObj(flatColor)
 }
@@ -61,10 +52,8 @@ const roundedContrast = (foreground, background) => {
 	const decimals = 2
 	return (
 		Math.round(
-			hexContrastCheck(
-				objToHex(flattenColor(foreground, background)),
-				objToHex(background)
-			) * Math.pow(10, decimals)
+			hexContrastCheck(objToHex(flattenColor(foreground, background)), objToHex(background)) *
+				Math.pow(10, decimals)
 		) / Math.pow(10, decimals)
 	)
 }
@@ -73,11 +62,7 @@ function Evaluation({ level }) {
 	return (
 		<div
 			className={
-				level === 'fail'
-					? 'evaluation fail'
-					: level === 'AA Large'
-					? 'evaluation large'
-					: 'evaluation success'
+				level === 'fail' ? 'evaluation fail' : level === 'AA Large' ? 'evaluation large' : 'evaluation success'
 			}
 		>
 			{level}
@@ -112,14 +97,7 @@ function Contrast({ foreground, background, isNonText }) {
 }
 
 function ContrastSapc({ foreground, background, isNonText }) {
-	const sapc = SAPCbasic(
-		background.r,
-		background.g,
-		background.b,
-		foreground.r,
-		foreground.g,
-		foreground.b
-	)
+	const sapc = SAPCbasic(background.r, background.g, background.b, foreground.r, foreground.g, foreground.b)
 
 	return (
 		<div
@@ -155,11 +133,8 @@ function ContrastSapc({ foreground, background, isNonText }) {
 				<span role="img" aria-label="caution">
 					⚠️
 				</span>{' '}
-				<a
-					style={{ color: 'inherit' }}
-					href="https://github.com/w3c/wcag/issues/695"
-				>
-					SAPC
+				<a style={{ color: 'inherit' }} href="https://github.com/w3c/wcag/issues/695">
+					APCA
 				</a>{' '}
 				Beta
 			</span>
@@ -174,9 +149,7 @@ export default function Picker(props) {
 			: colorStringToObj(presetDefaults[0])
 	)
 	const [objectColor, updateObjectColor] = useState(
-		chroma.valid(props.object)
-			? colorStringToObj(chroma(props.object).css())
-			: colorStringToObj(presetDefaults[1])
+		chroma.valid(props.object) ? colorStringToObj(chroma(props.object).css()) : colorStringToObj(presetDefaults[1])
 	)
 	const [backgroundColor, updateBackgroundColor] = useState(
 		chroma.valid(props.background)
@@ -186,12 +159,7 @@ export default function Picker(props) {
 
 	let presets = []
 
-	;[
-		props.foreground,
-		props.object,
-		props.background,
-		...props.swatches,
-	].forEach(value => {
+	;[props.foreground, props.object, props.background, ...props.swatches].forEach(value => {
 		if (chroma.valid(value) && !presets.includes(chroma(value).hex())) {
 			presets.push(chroma(value).hex())
 		}
@@ -201,12 +169,10 @@ export default function Picker(props) {
 		presets = presetDefaults
 	}
 
-	let queryString = `/${objToHex(textColor).substring(1)}/${objToHex(
-		objectColor
-	).substring(1)}/${objToHex(backgroundColor).substring(1)}`
-	queryString = props.swatches.length
-		? queryString + '/' + props.swatches.join('/')
-		: queryString
+	let queryString = `/${objToHex(textColor).substring(1)}/${objToHex(objectColor).substring(1)}/${objToHex(
+		backgroundColor
+	).substring(1)}`
+	queryString = props.swatches.length ? queryString + '/' + props.swatches.join('/') : queryString
 
 	return (
 		<div
@@ -228,13 +194,7 @@ export default function Picker(props) {
 						</div>
 						<small
 							style={{
-								color:
-									roundedRelativeLuminance(
-										backgroundColor,
-										objWhite
-									) > 0.17
-										? '#000'
-										: '#FFF',
+								color: roundedRelativeLuminance(backgroundColor, objWhite) > 0.17 ? '#000' : '#FFF',
 								display: 'block',
 								opacity: 0.7,
 								textAlign: 'left',
@@ -243,42 +203,31 @@ export default function Picker(props) {
 							<span role="img" aria-label="caution">
 								⚠️
 							</span>{' '}
-							Button boundaries are not required mandatorily to
-							fulfill these contrast criteria.{' '}
+							Button boundaries are not required mandatorily to fulfill these contrast criteria.{' '}
 							<a
 								style={{ color: 'inherit' }}
 								href="https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast#intent"
 							>
 								Learn more about Non-Text Contrast.
 							</a>{' '}
-							Better examples might be slider bars and knobs,
-							switches, toggles and other controls that need more
-							graphical cues to work than a text label or icon
-							alone.
+							Better examples might be slider bars and knobs, switches, toggles and other controls that
+							need more graphical cues to work than a text label or icon alone.
 						</small>
 					</div>
 					<div className="card-info">
-						<div className="card-title">
-							Contrast Text on Control
-						</div>
+						<div className="card-title">Contrast Text on Control</div>
 						<div className="small-print">
 							Text ↔︎ Control on Background on White.
 							<br />
 							Relative Luminance Text:{' '}
 							{roundedRelativeLuminance(
 								textColor,
-								flattenColor(
-									objectColor,
-									flattenColor(backgroundColor, objWhite)
-								)
+								flattenColor(objectColor, flattenColor(backgroundColor, objWhite))
 							)}
 						</div>
 						<Contrast
 							foreground={textColor}
-							background={flattenColor(
-								objectColor,
-								flattenColor(backgroundColor, objWhite)
-							)}
+							background={flattenColor(objectColor, flattenColor(backgroundColor, objWhite))}
 						/>
 
 						<div className="card-title">Contrast Control</div>
@@ -286,10 +235,7 @@ export default function Picker(props) {
 							Control ↔︎ Background on White.
 							<br />
 							Relative Luminance Control:{' '}
-							{roundedRelativeLuminance(
-								objectColor,
-								flattenColor(backgroundColor, objWhite)
-							)}
+							{roundedRelativeLuminance(objectColor, flattenColor(backgroundColor, objWhite))}
 						</div>
 						<Contrast
 							foreground={objectColor}
@@ -307,9 +253,8 @@ export default function Picker(props) {
 					>
 						<p className="larger">Large text on background</p>
 						<p>
-							Regular text on background. AA Large applies to text
-							with a font size of at least 24px or larger and
-							regular font weight as well as text which is …{' '}
+							Regular text on background. AA Large applies to text with a font size of at least 24px or
+							larger and regular font weight as well as text which is …{' '}
 						</p>
 						<p className="bolder">larger than 18.5px and bold.</p>
 					</div>
@@ -318,16 +263,9 @@ export default function Picker(props) {
 						<div className="small-print">
 							Text ↔︎ Background on White.
 							<br />
-							Relative Luminance Background:{' '}
-							{roundedRelativeLuminance(
-								backgroundColor,
-								objWhite
-							)}
+							Relative Luminance Background: {roundedRelativeLuminance(backgroundColor, objWhite)}
 						</div>
-						<Contrast
-							foreground={textColor}
-							background={flattenColor(backgroundColor, objWhite)}
-						/>
+						<Contrast foreground={textColor} background={flattenColor(backgroundColor, objWhite)} />
 					</div>
 				</div>
 				<div className="picker-layout">
@@ -335,13 +273,7 @@ export default function Picker(props) {
 						<div
 							className="picker-label"
 							style={{
-								color:
-									roundedRelativeLuminance(
-										backgroundColor,
-										objWhite
-									) > 0.17
-										? '#000'
-										: '#FFF',
+								color: roundedRelativeLuminance(backgroundColor, objWhite) > 0.17 ? '#000' : '#FFF',
 							}}
 						>
 							Text Color
@@ -350,22 +282,14 @@ export default function Picker(props) {
 							color={textColor}
 							disableAlpha={false}
 							presetColors={presets}
-							onChange={(color, event) =>
-								updateTextColor(color.rgb)
-							}
+							onChange={(color, event) => updateTextColor(color.rgb)}
 						/>
 					</div>
 					<div className="picker-wrapper">
 						<div
 							className="picker-label"
 							style={{
-								color:
-									roundedRelativeLuminance(
-										backgroundColor,
-										objWhite
-									) > 0.17
-										? '#000'
-										: '#FFF',
+								color: roundedRelativeLuminance(backgroundColor, objWhite) > 0.17 ? '#000' : '#FFF',
 							}}
 						>
 							Control Color
@@ -374,22 +298,14 @@ export default function Picker(props) {
 							color={objectColor}
 							disableAlpha={false}
 							presetColors={presets}
-							onChange={(color, event) =>
-								updateObjectColor(color.rgb)
-							}
+							onChange={(color, event) => updateObjectColor(color.rgb)}
 						/>
 					</div>
 					<div className="picker-wrapper">
 						<div
 							className="picker-label"
 							style={{
-								color:
-									roundedRelativeLuminance(
-										backgroundColor,
-										objWhite
-									) > 0.17
-										? '#000'
-										: '#FFF',
+								color: roundedRelativeLuminance(backgroundColor, objWhite) > 0.17 ? '#000' : '#FFF',
 							}}
 						>
 							Background Color
@@ -398,9 +314,7 @@ export default function Picker(props) {
 							color={backgroundColor}
 							disableAlpha={false}
 							presetColors={presets}
-							onChange={(color, event) =>
-								updateBackgroundColor(color.rgb)
-							}
+							onChange={(color, event) => updateBackgroundColor(color.rgb)}
 						/>
 					</div>
 				</div>
