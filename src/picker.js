@@ -116,12 +116,12 @@ function ContrastSapc({ foreground, background, isNonText }) {
 			<span
 				style={{
 					color: isNonText
-						? Math.abs(parseInt(sapc, 10)) >= 65
+						? Math.abs(parseInt(sapc, 10)) >= 60
 							? 'rgb(0, 160, 0)'
 							: 'rgb(180, 0, 0)'
 						: Math.abs(parseInt(sapc, 10)) >= 80
 						? 'rgb(0, 160, 0)'
-						: Math.abs(parseInt(sapc, 10)) >= 65
+						: Math.abs(parseInt(sapc, 10)) >= 60
 						? 'rgb(200, 160, 0)'
 						: 'rgb(200, 0, 0)',
 				}}
