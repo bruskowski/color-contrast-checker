@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Picker from "./picker"
-import { BrowserRouter as Router, Route } from "react-router-dom"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 
 import "./styles.css"
 
@@ -9,16 +9,22 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Route
-          render={({ location }) => (
-            <Picker
-              foreground={location.pathname.split("/")[1]}
-              object={location.pathname.split("/")[2]}
-              background={location.pathname.split("/")[3]}
-              swatches={location.pathname.split("/").slice(4)}
-            />
-          )}
-        />
+        <Routes>
+          {/* <Route path="/" element={<Picker />} /> */}
+          <Route
+            path="/*"
+            element={
+              <React.Fragment>
+                <Picker
+                  foreground={location.pathname.split("/")[1]}
+                  object={location.pathname.split("/")[2]}
+                  background={location.pathname.split("/")[3]}
+                  swatches={location.pathname.split("/").slice(4)}
+                />
+              </React.Fragment>
+            }
+          />
+        </Routes>
         <div className="small-print source">
           AA Large applies to text &gt; 24px or &gt; 18.5px for bold fonts.
           Learn more:{" "}
@@ -31,7 +37,7 @@ function App() {
           (WCAG 2.1)
           <br />
           For APCA font size and weight need to be taken into account, so the
-          little colored dotis not really meaningful:{" "}
+          little colored dot is not really meaningful:{" "}
           <a href="https://www.w3.org/WAI/GL/WCAG3/2020/methods/font-characteristics-contrast/">
             WCAG 3.0 APCA
           </a>{" "}

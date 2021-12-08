@@ -1,9 +1,13 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { SketchPicker } from "react-color"
 import getRelativeLuminance from "get-relative-luminance"
 import chroma from "chroma-js"
-import SAPCbasic from "./sapc"
+//import SAPCbasic from "./sapc"
+//import APCAcontrast, { sRGBtoY } from "apca-w3"
+// import { APCAcontrast, sRGBtoY } from "apca-w3"
+import { APCAcontrast, sRGBtoY } from "./apca.ts"
+// import { useLocation } from "react-router-dom"
 
 const hexContrastCheck = require("wcag-contrast").hex
 
@@ -108,14 +112,26 @@ function Contrast({ foreground, background, isNonText }) {
 }
 
 function ContrastSapc({ foreground, background, isNonText }) {
-  const sapc = SAPCbasic(
-    background.r,
-    background.g,
-    background.b,
-    foreground.r,
-    foreground.g,
-    foreground.b
+  // const sapc = SAPCbasic(
+  //   background.r,
+  //   background.g,
+  //   background.b,
+  //   foreground.r,
+  //   foreground.g,
+  //   foreground.b
+  // )
+
+  //const apca = 0
+  const apca = APCAcontrast(
+    sRGBtoY(`rgb(${foreground.r}, ${foreground.g}, ${foreground.b})`),
+    sRGBtoY(`rgb(${background.r}, ${background.g}, ${background.b})`)
   )
+
+  // console.log(`rgba(${foreground.r}, ${foreground.g}, ${foreground.b}, 1)`)
+  // console.log(sRGBtoY(`rgb(${foreground.r}, ${foreground.g}, ${foreground.b})`))
+  // console.log(apca)
+
+  //const apca = APCAcontrast(sRGBtoY(`rgb(0,0,0)`), sRGBtoY(`rgb(255,255,255)`))
 
   return (
     <div
@@ -130,16 +146,16 @@ function ContrastSapc({ foreground, background, isNonText }) {
         color: "black",
       }}
     >
-      {sapc}{" "}
+      {apca}{" "}
       <span
         style={{
           color: isNonText
-            ? Math.abs(parseInt(sapc, 10)) >= 60
+            ? Math.abs(parseInt(apca, 10)) >= 60
               ? "rgb(0, 160, 0)"
               : "rgb(180, 0, 0)"
-            : Math.abs(parseInt(sapc, 10)) >= 80
+            : Math.abs(parseInt(apca, 10)) >= 80
             ? "rgb(0, 160, 0)"
-            : Math.abs(parseInt(sapc, 10)) >= 60
+            : Math.abs(parseInt(apca, 10)) >= 60
             ? "rgb(200, 160, 0)"
             : "rgb(200, 0, 0)",
         }}
@@ -164,6 +180,21 @@ function ContrastSapc({ foreground, background, isNonText }) {
 }
 
 export default function Picker(props) {
+  // let location = useLocation()
+  // const [foreground, setForeground] = useState("#FFF")
+  // const [object, setObject] = useState("#FFF")
+  // const [background, setBackground] = useState("#FFF")
+  // const [swatches, setSwatches] = useState()
+
+  // useEffect(() => {
+  //   if (location.pathname && location.pathname.length > 1) {
+  //     setForeground(location.pathname.split("/")[1])
+  //     setObject(location.pathname.split("/")[2])
+  //     setBackground(location.pathname.split("/")[3])
+  //     setSwatches(location.pathname.split("/").slice(4))
+  //   }
+  // }, [location, setForeground, setObject, setBackground, setSwatches])
+
   const [textColor, updateTextColor] = useState(
     chroma.valid(props.foreground)
       ? colorStringToObj(chroma(props.foreground).css())
