@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { SketchPicker } from "react-color"
 import getRelativeLuminance from "get-relative-luminance"
 import chroma from "chroma-js"
-//import SAPCbasic from "./sapc"
 //import APCAcontrast, { sRGBtoY } from "apca-w3"
-// import { APCAcontrast, sRGBtoY } from "apca-w3"
 import { APCAcontrast, sRGBtoY } from "./apca.ts"
-// import { useLocation } from "react-router-dom"
 
 const hexContrastCheck = require("wcag-contrast").hex
 
@@ -112,26 +109,10 @@ function Contrast({ foreground, background, isNonText }) {
 }
 
 function ContrastSapc({ foreground, background, isNonText }) {
-  // const sapc = SAPCbasic(
-  //   background.r,
-  //   background.g,
-  //   background.b,
-  //   foreground.r,
-  //   foreground.g,
-  //   foreground.b
-  // )
-
-  //const apca = 0
   const apca = APCAcontrast(
     sRGBtoY(`rgb(${foreground.r}, ${foreground.g}, ${foreground.b})`),
     sRGBtoY(`rgb(${background.r}, ${background.g}, ${background.b})`)
   )
-
-  // console.log(`rgba(${foreground.r}, ${foreground.g}, ${foreground.b}, 1)`)
-  // console.log(sRGBtoY(`rgb(${foreground.r}, ${foreground.g}, ${foreground.b})`))
-  // console.log(apca)
-
-  //const apca = APCAcontrast(sRGBtoY(`rgb(0,0,0)`), sRGBtoY(`rgb(255,255,255)`))
 
   return (
     <div
@@ -150,13 +131,15 @@ function ContrastSapc({ foreground, background, isNonText }) {
       <span
         style={{
           color: isNonText
-            ? Math.abs(parseInt(apca, 10)) >= 60
+            ? Math.abs(parseInt(apca, 10)) >= 45
               ? "rgb(0, 160, 0)"
               : "rgb(180, 0, 0)"
-            : Math.abs(parseInt(apca, 10)) >= 80
+            : Math.abs(parseInt(apca, 10)) >= 75
             ? "rgb(0, 160, 0)"
             : Math.abs(parseInt(apca, 10)) >= 60
-            ? "rgb(200, 160, 0)"
+            ? "rgb(140, 180, 0)"
+            : Math.abs(parseInt(apca, 10)) >= 45
+            ? "rgb(220, 90, 0)"
             : "rgb(200, 0, 0)",
         }}
       >
