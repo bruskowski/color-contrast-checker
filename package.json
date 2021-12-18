@@ -5,7 +5,7 @@
 	"keywords": [],
 	"main": "src/index.js",
 	"dependencies": {
-		"apca-w3": "^0.0.98-g-4g-w3",
+		"apca-w3": "^0.0.98-g-4g.3",
 		"chroma-js": "^2.0.3",
 		"get-relative-luminance": "^1.0.0",
 		"query-string": "^7.0.1",

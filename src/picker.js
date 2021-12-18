@@ -3,8 +3,7 @@ import { Link } from "react-router-dom"
 import { SketchPicker } from "react-color"
 import getRelativeLuminance from "get-relative-luminance"
 import chroma from "chroma-js"
-//import APCAcontrast, { sRGBtoY } from "apca-w3"
-import { APCAcontrast, sRGBtoY } from "./apca.ts"
+import { APCAcontrast, sRGBtoY } from "apca-w3"
 
 const hexContrastCheck = require("wcag-contrast").hex
 
@@ -27,11 +26,12 @@ const objToRgb = colorObj => {
 }
 
 const colorStringToObj = rgba => {
+  const color = chroma(rgba)
   return {
-    r: chroma(rgba).get("rgb.r"),
-    g: chroma(rgba).get("rgb.g"),
-    b: chroma(rgba).get("rgb.b"),
-    a: chroma(rgba).alpha(),
+    r: color.get("rgb.r"),
+    g: color.get("rgb.g"),
+    b: color.get("rgb.b"),
+    a: color.alpha(),
   }
 }
 
@@ -110,8 +110,8 @@ function Contrast({ foreground, background, isNonText }) {
 
 function ContrastSapc({ foreground, background, isNonText }) {
   const apca = APCAcontrast(
-    sRGBtoY(`rgb(${foreground.r}, ${foreground.g}, ${foreground.b})`),
-    sRGBtoY(`rgb(${background.r}, ${background.g}, ${background.b})`)
+    sRGBtoY([foreground.r, foreground.g, foreground.b, 255]),
+    sRGBtoY([background.r, background.g, background.b, 255])
   )
 
   return (
@@ -163,21 +163,6 @@ function ContrastSapc({ foreground, background, isNonText }) {
 }
 
 export default function Picker(props) {
-  // let location = useLocation()
-  // const [foreground, setForeground] = useState("#FFF")
-  // const [object, setObject] = useState("#FFF")
-  // const [background, setBackground] = useState("#FFF")
-  // const [swatches, setSwatches] = useState()
-
-  // useEffect(() => {
-  //   if (location.pathname && location.pathname.length > 1) {
-  //     setForeground(location.pathname.split("/")[1])
-  //     setObject(location.pathname.split("/")[2])
-  //     setBackground(location.pathname.split("/")[3])
-  //     setSwatches(location.pathname.split("/").slice(4))
-  //   }
-  // }, [location, setForeground, setObject, setBackground, setSwatches])
-
   const [textColor, updateTextColor] = useState(
     chroma.valid(props.foreground)
       ? colorStringToObj(chroma(props.foreground).css())
